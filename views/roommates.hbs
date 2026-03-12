@@ -1,0 +1,84 @@
+<div class="card p-4">
+  <h3>Roommates</h3>
+
+  <!-- Add roommate -->
+  <form method="post" action="/roommates/add" class="mb-3">
+    <div class="mb-2">
+      <input name="name" class="form-control" placeholder="Roommate name (e.g., Alex)">
+    </div>
+    <button type="submit" class="btn btn-primary">Add Roommate</button>
+  </form>
+
+  <!-- Toggle Edit Mode -->
+  <a href="/roommates?edit={{#if edit}}false{{else}}true{{/if}}" 
+     class="btn btn-outline-danger btn-md mb-3" style="max-width:100px;">
+    {{#if edit}}Done{{else}}Edit{{/if}}
+  </a>
+
+  <!-- Roommates List -->
+  <ul class="list-group">
+    {{#each roommates}}
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        {{#if ../edit}}
+          <!-- Update form -->
+          <form method="post" action="/roommates/update/{{this._id}}" class="d-flex w-100 me-2">
+            <input name="name" value="{{this.name}}" class="form-control me-2">
+            <button type="submit" class="btn btn-sm btn-success">Save</button>
+          </form>
+
+          <!-- Delete button triggers modal -->
+          <form method="post" action="/roommates/delete/{{this._id}}">
+            <button type="button" class="btn btn-sm btn-danger delete-btn"
+                    data-id="{{this._id}}"
+                    data-name="{{this.name}}"
+                    data-bs-toggle="modal"
+                    data-bs-target="#deleteConfirmModal">
+              Delete
+            </button>
+          </form>
+        {{else}}
+          {{this.name}}
+        {{/if}}
+      </li>
+    {{/each}}
+  </ul>
+
+  <!-- Back to dashboard -->
+  <a class="btn btn-link mt-3" href="/dashboard">Back</a>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Confirm Delete</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to delete <strong id="deleteRoommateName"></strong>?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- JS for Delete Modal -->
+<script>
+  let deleteForm;
+
+  document.querySelectorAll('.delete-btn').forEach(btn => {
+    btn.addEventListener('click', e => {
+      const name = e.target.dataset.name;
+      document.getElementById('deleteRoommateName').textContent = name;
+      deleteForm = e.target.closest('form'); // store form to submit on confirm
+    });
+  });
+
+  document.getElementById('confirmDeleteBtn').addEventListener('click', () => {
+    if (deleteForm) deleteForm.submit();
+  });
+</script>

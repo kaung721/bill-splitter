@@ -1,0 +1,47 @@
+<div class="hero mb-4">
+  <h1 class="display-6 mb-2">Welcome, {{user.name}}</h1>
+  <p class="lead mb-0">Use the controls below to add bills, assign items and review who owes what.</p>
+</div>
+
+{{!-- Adding new bill }}
+<div class="row g-4">
+  <div class="col-md-6">
+    <div class="card p-4 h-100">
+      <h5 class="mb-2">Add Bill</h5>
+      <p class="text-muted small mb-4">Create a new bill for rent, utilities, groceries or anything shared.</p>
+      <a class="btn btn-dark w-100" href="/bills/new">Add Bill</a>
+    </div>
+  </div>
+
+{{!-- Choosing and assigning each item to a user --}}
+  <div class="col-md-6">
+    <div class="card p-4 h-100">
+      <h5 class="mb-2">Assign Items</h5>
+      <p class="text-muted small mb-3">Choose a draft bill and assign each line-item to the right roommate.</p>
+      <ul class="list-group">
+        {{#each bills}}
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div>{{this.storeName}} — ${{formatCents this.totalAmountCents}} — {{this.category}}</div>
+            <div>
+              <a class="btn btn-sm btn-outline-primary" href="/items/assign?bill={{this._id}}">Assign</a>
+              <a class="btn btn-sm btn-outline-secondary" href="/summary/{{this._id}}">Summary</a>
+            </div>
+          </li>
+        {{/each}}
+      </ul>
+    </div>
+  </div>
+
+{{!-- listing and managing roommates --}}
+  <div class="col-12">
+    <div class="card p-3">
+      <h5>Roommates</h5>
+      <ul class="list-group">
+        {{#each roommates}}
+          <li class="list-group-item">{{this.name}}</li>
+        {{/each}}
+      </ul>
+      <a class="btn btn-link mt-2" href="/roommates">Manage Roommates</a>
+    </div>
+  </div>
+</div>

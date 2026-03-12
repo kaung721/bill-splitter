@@ -1,0 +1,47 @@
+{{!-- Assigning items to roommates for a specific bill --}}
+<div class="card p-4">
+  <h3>Assign Items for {{bill.storeName}} (${{formatCents bill.totalAmountCents}})</h3>
+
+  <table class="table">
+    <thead><tr><th>Item</th><th>Price</th><th>Assign To</th><th></th></tr></thead>
+    <tbody>
+      {{#each items}}
+        <tr>
+          <td>{{this.name}}</td>
+          <td>${{this.price}}</td>
+          <td>
+            <select class="form-select form-select-sm" disabled>
+              {{#each ../roommates}}
+                <option value="{{this._id}}" {{#ifEquals this._id ../this.assignedTo}}selected{{/ifEquals}}>{{this.name}}</option>
+              {{/each}}
+            </select>
+          </td>
+          <td></td>
+        </tr>
+      {{/each}}
+      <tr>
+        <form method="post" action="/items/add">
+          <input type="hidden" name="billId" value="{{bill._id}}">
+          <td><input name="name" class="form-control form-control-sm" placeholder="Item name" required></td>
+          <td><input name="price" class="form-control form-control-sm" type="number" step="0.01" placeholder="0.00" required></td>
+          <td>
+            <select name="assignedTo" class="form-select form-select-sm">
+              <option value="">Unassigned</option>
+              {{#each roommates}}
+                <option value="{{this._id}}">{{this.name}}</option>
+              {{/each}}
+            </select>
+          </td>
+          <td><button class="btn btn-sm btn-secondary">Add</button></td>
+        </form>
+      </tr>
+    </tbody>
+  </table>
+
+  <form method="post" action="/items/finish">
+    <input type="hidden" name="billId" value="{{bill._id}}">
+    <button class="btn btn-success w-100">Done</button>
+  </form>
+
+  <a class="btn btn-link mt-3" href="/dashboard">Back</a>
+</div>

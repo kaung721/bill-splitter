@@ -1,0 +1,16 @@
+{{!-- Landing page --}}
+{{#if currentUser}}
+  <script>window.location='/dashboard'</script>
+{{else}}
+  <section class="hero">
+    <h1 class="display-5 mb-3">Roommate bill splitting made easy</h1>
+    <p class="lead">
+      Manually add bills, assign every item to the right roommate,
+      and see exactly who owes what in seconds.
+    </p>
+    <div class="mt-4 d-flex justify-content-center gap-3 flex-wrap">
+      <a class="btn btn-primary btn-lg px-4" href="/login">Login</a>
+      <a class="btn btn-dark btn-lg px-4" href="/register">Register</a>
+    </div>
+  </section>
+{{/if}}

@@ -1,0 +1,20 @@
+// require mongoose
+const mongoose = require('mongoose');
+
+async function connectDB() {
+  const uri = process.env.MONGO_URI;
+  if (!uri) {
+    console.error('MONGO_URI not set in environment');
+    process.exit(1);
+  }
+  // try to connect to the database and catch errors 
+  try {
+    mongoose.connect(process.env.MONGO_URI);
+    console.log('MongoDB connected');
+  } catch (err) {
+    console.error('MongoDB connection error:', err);
+    process.exit(1);
+  }
+}
+
+module.exports = { connectDB };

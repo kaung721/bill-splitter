@@ -1,0 +1,34 @@
+{{!-- Card/form to add a new bill --}}
+<div class="card p-4">
+  <h3>Add Bill</h3>
+  <p>Enter store, total, category, and who paid</p>
+  <form method="post" action="/bills/new">
+    <div class="mb-2">
+      <label>Store Name</label>
+      <input name="storeName" class="form-control" required>
+    </div>
+    <div class="mb-2">
+      <label>Total Amount</label>
+      <input name="totalAmount" class="form-control" type="number" step="0.01" required>
+    </div>
+    <div class="mb-2">
+      <label>Category</label>
+      <select name="category" class="form-select">
+        <option>Groceries</option>
+        <option>Utilities</option>
+        <option>Food Takeout</option>
+        <option>Household Items</option>
+      </select>
+    </div>
+    <div class="mb-2">
+      <label>Who Paid?</label>
+      <select name="paidBy" class="form-select" required>
+        {{#each roommates}}
+          <option value="{{this._id}}">{{this.name}}</option>
+        {{/each}}
+      </select>
+    </div>
+    <button class="btn btn-dark">Save Bill</button>
+  </form>
+  <a class="btn btn-link mt-3" href="/dashboard">Back</a>
+</div>
